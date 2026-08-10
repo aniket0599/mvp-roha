@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #fcf9f8;
+  color: #1c1b1b;
+  font-family: var(--font-hanken), "Hanken Grotesk", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Material Symbols — used for the small contextual icons in the designs */
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+@layer components {
+  /* Primary button: solid forest green, 48px tactile height */
+  .btn-primary {
+    @apply w-full h-12 rounded-lg bg-primary text-on-primary font-sans font-medium text-label-md
+      flex items-center justify-center gap-2 transition-opacity hover:opacity-90
+      active:opacity-80 disabled:opacity-40 disabled:pointer-events-none;
+  }
+
+  /* Secondary button: fine 1px outline, print-style */
+  .btn-secondary {
+    @apply w-full h-12 rounded-lg bg-transparent text-on-surface border border-outline-variant
+      font-sans font-medium text-label-md flex items-center justify-center gap-2
+      transition-colors hover:bg-surface-container active:bg-surface-container-high;
+  }
+
+  /* Low-contrast taupe chip for interests / tags */
+  .chip {
+    @apply inline-flex items-center bg-surface-container-low border border-surface-variant
+      rounded-full px-3 py-1.5 text-label-md font-sans text-on-surface;
+  }
+
+  .chip-selectable {
+    @apply inline-flex items-center bg-transparent border border-outline-variant rounded-full
+      px-4 py-2 text-body-md font-sans text-on-surface transition-colors cursor-pointer
+      hover:bg-surface-container select-none;
+  }
+
+  .chip-selected {
+    @apply bg-primary text-on-primary border-primary hover:bg-primary;
+  }
+
+  .label-caps {
+    @apply text-label-caps font-sans font-semibold uppercase tracking-[0.1em] text-outline;
+  }
+
+  /* White card lifted off the oatmeal canvas with a 1px stroke, no heavy shadow */
+  .card {
+    @apply bg-surface-container-lowest border border-surface-variant rounded-lg;
+  }
+
+  /* Print-style text input: bottom border only */
+  .field-input {
+    @apply w-full bg-transparent border-0 border-b border-outline-variant py-2 text-body-lg
+      font-sans text-on-surface placeholder:text-outline focus:outline-none
+      focus:border-primary transition-colors;
+  }
+
+  .field-textarea {
+    @apply w-full bg-transparent border border-outline-variant rounded-lg p-3 text-body-md
+      font-sans text-on-surface placeholder:text-outline focus:outline-none
+      focus:border-primary transition-colors resize-none;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

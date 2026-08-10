@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Around - People Around You</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#1c1b1b",
+                      "tertiary-container": "#42423d",
+                      "inverse-primary": "#b0cdbb",
+                      "surface-dim": "#dcd9d9",
+                      "surface-tint": "#496455",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#fe9572",
+                      "surface-variant": "#e5e2e1",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-error-container": "#93000a",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#2d4739",
+                      "background": "#fcf9f8",
+                      "on-secondary-fixed": "#390b00",
+                      "on-primary-container": "#98b5a3",
+                      "secondary-fixed": "#ffdbd0",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#fcf9f8",
+                      "on-error": "#ffffff",
+                      "primary": "#173124",
+                      "on-surface": "#1c1b1b",
+                      "primary-fixed-dim": "#b0cdbb",
+                      "surface-container": "#f0eded",
+                      "on-primary-fixed": "#062014",
+                      "on-tertiary-container": "#b0aea8",
+                      "on-secondary-container": "#762c12",
+                      "on-tertiary-fixed-variant": "#474742",
+                      "outline": "#727973",
+                      "on-primary-fixed-variant": "#324c3e",
+                      "surface": "#fcf9f8",
+                      "tertiary-fixed": "#e5e2db",
+                      "tertiary-fixed-dim": "#c9c6c0",
+                      "on-tertiary-fixed": "#1c1c18",
+                      "surface-container-low": "#f6f3f2",
+                      "on-surface-variant": "#424844",
+                      "primary-fixed": "#ccead6",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed-dim": "#ffb59e",
+                      "inverse-surface": "#313030",
+                      "error": "#ba1a1a",
+                      "secondary": "#99462a",
+                      "inverse-on-surface": "#f3f0ef",
+                      "tertiary": "#2c2c28",
+                      "surface-container-high": "#eae7e7",
+                      "outline-variant": "#c2c8c2",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed-variant": "#7a2f15"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "stack-lg": "48px",
+                      "stack-sm": "12px",
+                      "stack-md": "24px",
+                      "unit": "8px",
+                      "margin-desktop": "40px",
+                      "margin-mobile": "20px",
+                      "container-max": "1200px"
+              },
+              "fontFamily": {
+                      "label-caps": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-md": [
+                              "Playfair Display"
+                      ],
+                      "display-lg-mobile": [
+                              "Playfair Display"
+                      ],
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Playfair Display"
+                      ],
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+            },
+          }
+        }
+      </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col relative pb-32">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background text-primary dark:text-primary-fixed flex items-center w-full px-margin-mobile md:px-margin-desktop py-stack-sm docked full-width top-0 flat no shadows sticky z-40">
+<button class="mr-4 text-on-surface-variant dark:text-on-tertiary-container hover:bg-surface-container dark:hover:bg-tertiary-container transition-colors rounded-full p-2 flex items-center justify-center opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="text-headline-md font-headline-md text-primary dark:text-on-primary-fixed tracking-tight">Around</h1>
+</header>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-[container-max] mx-auto px-margin-mobile md:px-margin-desktop py-stack-md">
+<!-- Page Header -->
+<div class="mb-stack-lg border-b border-surface-variant pb-stack-md">
+<div class="flex items-center gap-2 mb-unit text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span class="font-label-caps text-label-caps">Blue Tokai · 4:42 PM</span>
+</div>
+<h2 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-primary mb-2">People around you</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant">12 people are discoverable here</p>
+</div>
+<!-- Discovery Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<article class="bg-surface-container-lowest border border-surface-variant rounded-lg p-stack-md flex flex-col relative overflow-hidden transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
+<!-- Top Section -->
+<div class="flex justify-between items-start mb-stack-md">
+<div>
+<h3 class="text-headline-md font-headline-md text-primary mb-1">Aniket, 27</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center border border-surface-variant overflow-hidden">
+<span class="text-xl">🧑‍.</span>
+</div>
+</div>
+<!-- Info Blocks -->
+<div class="space-y-stack-sm mb-stack-md flex-1">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-1" data-icon="engineering">engineering</span>
+<p class="text-body-md font-body-md text-on-surface">Robotics engineer</p>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-1" data-icon="sprint">sprint</span>
+<p class="text-body-md font-body-md text-on-surface">Started running 6 months ago</p>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-1" data-icon="menu_book">menu_book</span>
+<p class="text-body-md font-body-md text-on-surface">Reading about sociology</p>
+</div>
+</div>
+<!-- Additional Context -->
+<div class="space-y-stack-sm border-t border-surface-variant pt-stack-sm mb-stack-md">
+<div>
+<span class="text-label-caps font-label-caps text-outline block mb-1">Looking for</span>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-low px-3 py-1.5 rounded-full text-label-md font-label-md text-on-surface border border-surface-variant">HYROX partner</span>
+<span class="bg-surface-container-low px-3 py-1.5 rounded-full text-label-md font-label-md text-on-surface border border-surface-variant">Travel tips</span>
+</div>
+</div>
+<div>
+<span class="text-label-caps font-label-caps text-outline block mb-1">Usually here</span>
+<p class="text-body-md font-body-md text-on-surface">Sunday afternoons</p>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary text-on-primary h-12 rounded-lg flex items-center justify-center font-label-md text-label-md hover:opacity-90 transition-opacity">
+                    See more
+                </button>
+</article>
+<!-- Card 2 -->
+<article class="bg-surface-container-lowest border border-surface-variant rounded-lg p-stack-md flex flex-col relative overflow-hidden transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
+<!-- Top Section -->
+<div class="flex justify-between items-start mb-stack-md">
+<div>
+<h3 class="text-headline-md font-headline-md text-primary mb-1">Riya, 26</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center border border-surface-variant overflow-hidden">
+<span class="text-xl">👩🏽‍🦱</span>
+</div>
+</div>
+<!-- Info Blocks -->
+<div class="space-y-stack-sm mb-stack-md flex-1">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-1" data-icon="book">book</span>
+<p class="text-body-md font-body-md text-on-surface">Reading Kafka</p>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-1" data-icon="brush">brush</span>
+<p class="text-body-md font-body-md text-on-surface">Illustrates in her free time</p>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline mt-1" data-icon="flight_takeoff">flight_takeoff</span>
+<p class="text-body-md font-body-md text-on-surface">Travelling to Vietnam next month</p>
+</div>
+</div>
+<!-- Additional Context -->
+<div class="space-y-stack-sm border-t border-surface-variant pt-stack-sm mb-stack-md">
+<div>
+<span class="text-label-caps font-label-caps text-outline block mb-1">Ask about</span>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-low px-3 py-1.5 rounded-full text-label-md font-label-md text-on-surface border border-surface-variant">Books</span>
+<span class="bg-surface-container-low px-3 py-1.5 rounded-full text-label-md font-label-md text-on-surface border border-surface-variant">Travel</span>
+<span class="bg-surface-container-low px-3 py-1.5 rounded-full text-label-md font-label-md text-on-surface border border-surface-variant">Art</span>
+</div>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary text-on-primary h-12 rounded-lg flex items-center justify-center font-label-md text-label-md hover:opacity-90 transition-opacity mt-auto">
+                    See more
+                </button>
+</article>
+<!-- Decorative Card (to fill grid) -->
+<article class="hidden lg:flex bg-surface-container-low border border-surface-variant border-dashed rounded-lg p-stack-md flex-col items-center justify-center text-center opacity-70">
+<span class="material-symbols-outlined text-4xl text-outline mb-4" data-icon="radar">radar</span>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-2">More people nearby</p>
+<p class="text-body-md font-body-md text-outline">Keep exploring to discover others in your vicinity.</p>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 h-16 bg-surface dark:bg-on-background text-primary dark:text-on-primary-container docked full-width shadow-[0_-4px_24px_rgba(0,0,0,0.05)] md:hidden">
+<!-- Active: Around You -->
+<button class="flex flex-col items-center justify-center text-primary dark:text-on-primary-container font-semibold scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined mb-1" data-icon="explore" data-weight="fill" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="text-label-caps font-label-caps">Around You</span>
+</button>
+<!-- Inactive: Connections -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined mb-1" data-icon="group">group</span>
+<span class="text-label-caps font-label-caps">Connections</span>
+</button>
+<!-- Inactive: Profile -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="text-label-caps font-label-caps">Profile</span>
+</button>
+</nav>
+<!-- Desktop Side Nav (Visible only on md+) -->
+<aside class="hidden md:flex fixed right-margin-desktop top-1/2 -translate-y-1/2 flex-col gap-6 z-40 bg-surface-container-lowest p-4 rounded-xl border border-surface-variant shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
+<button class="flex flex-col items-center justify-center text-primary dark:text-on-primary-container font-semibold scale-95 transition-transform duration-200" title="Around You">
+<span class="material-symbols-outlined" data-icon="explore" data-weight="fill" style="font-variation-settings: 'FILL' 1;">explore</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container hover:text-primary transition-colors" title="Connections">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container hover:text-primary transition-colors" title="Profile">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</aside>
+</body></html>
