@@ -129,7 +129,7 @@ npm run build && npm start
 ```
 
 Set the Supabase env vars in your host for a persistent experiment. Optionally
-set `ADMIN_TOKEN` to gate the experiment-reset endpoint.
+set `ADMIN_PASSWORD` to password-protect the research dashboard and reset action.
 
 ---
 

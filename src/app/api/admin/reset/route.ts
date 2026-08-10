@@ -1,16 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStore } from "@/lib/store";
+import { isAdminAuthed } from "@/lib/admin-auth";
 
 // Reset an experiment: clears participant-created profiles, analytics and
-// connections for a venue, keeping the seed regulars. Optionally gated behind
-// ADMIN_TOKEN (set the env var to require ?token=... ).
+// connections for a venue, keeping the seed regulars. Requires an authenticated
+// admin session when ADMIN_PASSWORD is set.
 export async function POST(req: NextRequest) {
-  const token = process.env.ADMIN_TOKEN;
-  if (token) {
-    const provided = new URL(req.url).searchParams.get("token");
-    if (provided !== token) {
-      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-    }
+  if (!isAdminAuthed()) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
   const body = await req.json().catch(() => ({}));

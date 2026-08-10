@@ -66,7 +66,9 @@ In the Supabase dashboard → **Project Settings** → **API**:
 3. Before deploying, expand **Environment Variables** and add:
    - `SUPABASE_URL` = your Project URL
    - `SUPABASE_SERVICE_ROLE_KEY` = your service_role key
-   - *(optional)* `ADMIN_TOKEN` = a long random string (gates the reset button)
+   - *(recommended)* `ADMIN_PASSWORD` = a strong password — password-protects the
+     research dashboard (`/admin/<venue>`) and the reset action. Without it the
+     dashboard is open to anyone with the link.
 4. Click **Deploy**. In ~1 minute you get a URL like
    `https://mvp-roha.vercel.app`.
 

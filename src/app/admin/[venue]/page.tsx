@@ -2,8 +2,11 @@ import { notFound } from "next/navigation";
 import { AppBar } from "@/components/AppBar";
 import { AutoRefresh } from "@/components/AutoRefresh";
 import { ResetExperiment } from "@/components/ResetExperiment";
+import { AdminLogin } from "@/components/AdminLogin";
+import { AdminLogout } from "@/components/AdminLogout";
 import { Icon } from "@/components/Icon";
 import { getStore, usingSupabase } from "@/lib/store";
+import { adminGateEnabled, isAdminAuthed } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +19,9 @@ export default async function AdminPage({
   const store = getStore();
   const space = await store.getSpaceByVenue(params.venue);
   if (!space) notFound();
+
+  // Optional password gate (active when ADMIN_PASSWORD is set).
+  if (!isAdminAuthed()) return <AdminLogin />;
 
   const metrics = await store.getMetrics(space.id);
   const participants = await store.listVisibleProfiles(space.id);
@@ -98,8 +104,14 @@ export default async function AdminPage({
           <p className="text-label-md text-outline flex items-center gap-1.5">
             <Icon name="database" className="text-[16px]" />
             {usingSupabase() ? "Supabase (persistent)" : "In-memory (resets on restart)"}
+            <span aria-hidden>·</span>
+            <Icon name={adminGateEnabled() ? "lock" : "lock_open"} className="text-[16px]" />
+            {adminGateEnabled() ? "Password protected" : "Unprotected — set ADMIN_PASSWORD"}
           </p>
-          <ResetExperiment venue={params.venue} />
+          <div className="flex items-center gap-4">
+            <ResetExperiment venue={params.venue} />
+            {adminGateEnabled() && <AdminLogout />}
+          </div>
         </div>
       </main>
     </div>
