@@ -26,3 +26,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# generated QR images (ephemeral tunnel URLs)
+around-qr-*.png
