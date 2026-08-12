@@ -4,11 +4,17 @@
 -- regulars on first request if the tables are empty.
 
 create table if not exists spaces (
-  id         text primary key,
-  venue_id   text unique not null,
-  name       text not null,
-  image_url  text
+  id            text primary key,
+  venue_id      text unique not null,
+  name          text not null,
+  facility_type text not null default 'cafe',
+  tagline       text,
+  image_url     text
 );
+
+-- If you created the spaces table before facility types were added, run:
+--   alter table spaces add column if not exists facility_type text not null default 'cafe';
+--   alter table spaces add column if not exists tagline text;
 
 create table if not exists profiles (
   id               text primary key,          -- anonymous user id

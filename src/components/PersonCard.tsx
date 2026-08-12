@@ -1,20 +1,27 @@
 import Link from "next/link";
 import type { PublicProfile, SharedContext } from "@/lib/types";
+import type { FacilityConfig } from "@/lib/facilities";
+import { orderedNowLines, primaryTagGroup } from "@/lib/prioritize";
 import { ModeBadge } from "./ModeBadge";
 
 // A contextual discovery card. It should immediately answer:
 // "Why might this person be interesting to me?" — no swiping, no photo priority.
+// Which signals lead is decided by the facility (a gym leads with training,
+// a library with what they're reading, and so on).
 export function PersonCard({
   venue,
   person,
+  facility,
   shared,
 }: {
   venue: string;
   person: PublicProfile;
+  facility: FacilityConfig;
   shared?: SharedContext[];
 }) {
-  const tagsLabel = person.lookingFor.length ? "Looking for" : "Ask me about";
-  const tags = (person.lookingFor.length ? person.lookingFor : person.askMeAbout).slice(0, 3);
+  const { label: tagsLabel, tags: allTags } = primaryTagGroup(person, facility);
+  const tags = allTags.slice(0, 3);
+  const nowLines = orderedNowLines(person, facility);
 
   return (
     <article className="card p-stack-md flex flex-col">
@@ -32,7 +39,7 @@ export function PersonCard({
       </div>
 
       <ul className="space-y-2 mb-stack-md flex-1">
-        {person.nowLines.slice(0, 3).map((line, i) => (
+        {nowLines.slice(0, 3).map((line, i) => (
           <li key={i} className="flex items-start gap-2.5">
             <span className="text-[18px] leading-6 shrink-0">{line.emoji}</span>
             <span className="text-body-md text-on-surface">{line.text}</span>

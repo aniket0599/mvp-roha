@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import { AppBar } from "@/components/AppBar";
-import { CafeBanner } from "@/components/CafeBanner";
+import { FacilityBanner } from "@/components/FacilityBanner";
 import { VenueClock } from "@/components/VenueClock";
 import { JoinActions } from "@/components/JoinActions";
 import { Icon } from "@/components/Icon";
 import { getStore } from "@/lib/store";
 import { getUserId } from "@/lib/session";
+import { facilityConfig } from "@/lib/facilities";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,8 @@ export default async function JoinPage({ params }: { params: { venue: string } }
   const uid = getUserId();
   const existing = uid ? await store.getProfile(uid) : null;
   const hasProfile = Boolean(existing);
+  const facility = facilityConfig(space.facilityType);
+  const tagline = space.tagline ?? facility.tagline;
 
   return (
     <div className="min-h-dvh flex flex-col">
@@ -29,12 +32,17 @@ export default async function JoinPage({ params }: { params: { venue: string } }
         </div>
 
         <div className="mb-stack-lg">
-          <CafeBanner venueName={space.name} />
+          <FacilityBanner facility={facility} venueName={space.name} />
         </div>
 
+        <div className="flex items-center gap-1.5 text-label-caps font-semibold uppercase tracking-[0.1em] text-on-surface-variant mb-2">
+          <span aria-hidden>{facility.emoji}</span>
+          {facility.label}
+        </div>
         <h2 className="font-display text-display-mobile text-primary mb-3">
           You&rsquo;re at {space.name}
         </h2>
+        <p className="text-body-lg text-on-surface-variant mb-2">{tagline}</p>
         <p className="text-body-lg text-on-surface-variant mb-stack-lg">
           {count} {count === 1 ? "person is" : "people are"} here. Discover who&rsquo;s around you.
         </p>

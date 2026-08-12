@@ -10,6 +10,8 @@ import { getStore } from "@/lib/store";
 import { getUserId } from "@/lib/session";
 import { toPublicProfile } from "@/lib/present";
 import { computeSharedContext } from "@/lib/matching";
+import { facilityConfig } from "@/lib/facilities";
+import { facilityRelevance } from "@/lib/prioritize";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +28,12 @@ export default async function SpacePage({
 
   const uid = getUserId();
   const viewer = uid ? await store.getProfile(uid) : null;
-  const people = await store.listVisibleProfiles(space.id, uid ?? undefined);
+  const facility = facilityConfig(space.facilityType);
+  const rawPeople = await store.listVisibleProfiles(space.id, uid ?? undefined);
+  // Order the grid so the people most relevant to *this* facility surface first.
+  const people = [...rawPeople].sort(
+    (a, b) => facilityRelevance(b, facility) - facilityRelevance(a, facility),
+  );
 
   return (
     <div className="min-h-dvh flex flex-col pb-24">
@@ -34,10 +41,16 @@ export default async function SpacePage({
       <AppBar />
       <main className="flex-1 w-full max-w-phone mx-auto px-margin-mobile pt-2">
         <div className="mb-stack-md border-b border-surface-variant pb-stack-md">
-          <div className="mb-unit">
+          <div className="mb-unit flex items-center gap-2 flex-wrap">
             <VenueClock venueName={space.name} />
+            <span className="inline-flex items-center gap-1 text-label-md text-on-surface-variant">
+              <span aria-hidden>·</span>
+              {facility.emoji} {facility.label}
+            </span>
           </div>
-          <h2 className="font-display text-display-mobile text-primary mb-1">People around you</h2>
+          <h2 className="font-display text-display-mobile text-primary mb-1">
+            {facility.discoverTitle}
+          </h2>
           <p className="text-body-lg text-on-surface-variant">
             {people.length} {people.length === 1 ? "person is" : "people are"} discoverable here
           </p>
@@ -69,7 +82,8 @@ export default async function SpacePage({
               key={p.id}
               venue={params.venue}
               person={toPublicProfile(p)}
-              shared={computeSharedContext(viewer, p)}
+              facility={facility}
+              shared={computeSharedContext(viewer, p, facility.priorityCategories)}
             />
           ))}
         </div>

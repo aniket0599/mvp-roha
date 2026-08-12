@@ -4,6 +4,7 @@ import { ProfileForm } from "@/components/ProfileForm";
 import { initialFromProfile } from "@/lib/profileFormModel";
 import { getStore } from "@/lib/store";
 import { getUserId } from "@/lib/session";
+import { facilityConfig } from "@/lib/facilities";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ export default async function CreatePage({ params }: { params: { venue: string }
 
   const uid = getUserId();
   const existing = uid ? await store.getProfile(uid) : null;
+  const facility = facilityConfig(space.facilityType);
 
   return (
     <div className="min-h-dvh flex flex-col">
@@ -24,12 +26,13 @@ export default async function CreatePage({ params }: { params: { venue: string }
           Create your social profile.
         </h2>
         <p className="text-body-lg text-on-surface-variant mb-stack-lg">
-          Introduce yourself to the people here. Be genuine, be curious.
+          Introduce yourself to the people at {space.name}. Be genuine, be curious.
         </p>
         <ProfileForm
           venue={params.venue}
           mode="create"
           initial={initialFromProfile(existing)}
+          prompts={facility.onboarding}
         />
       </main>
     </div>

@@ -5,7 +5,7 @@ import type {
   SocialMode,
   Space,
 } from "../types";
-import { SEED_SPACES, seedProfiles } from "../seed";
+import { SEED_SPACES, seedProfilesForSpace } from "../seed";
 import type { DataStore, SpaceMetrics } from "./DataStore";
 
 // ---------------------------------------------------------------------------
@@ -33,7 +33,7 @@ function createState(): MemoryState {
 
   for (const space of SEED_SPACES) {
     spaces.set(space.id, space);
-    for (const p of seedProfiles(space.id)) {
+    for (const p of seedProfilesForSpace(space)) {
       profiles.set(p.id, p);
       seedProfileIds.add(p.id);
     }

@@ -208,13 +208,21 @@ function matchesCategory(text: string, interests: string[], def: CategoryDef): b
   return def.keywords.some((k) => text.includes(k));
 }
 
+/** Ranks a `category` name: those in `priority` sort first (in listed order). */
+function priorityRank(category: string, priority: string[]): number {
+  const i = priority.indexOf(category);
+  return i === -1 ? priority.length + 1 : i;
+}
+
 /**
  * Compute the shared context between the viewer and the person they're looking at.
- * Returns a de-duplicated, ordered list of genuine common ground.
+ * Returns a de-duplicated list of genuine common ground, ordered with the
+ * facility's priority categories first when provided.
  */
 export function computeSharedContext(
   viewer: Profile | null,
   target: Profile | PublicProfile,
+  priorityCategories: string[] = [],
 ): SharedContext[] {
   if (!viewer) return [];
   const viewerText = profileText(viewer);
@@ -228,7 +236,38 @@ export function computeSharedContext(
       shared.push({ emoji: def.emoji, text: def.both, category: def.category });
     }
   }
+  if (priorityCategories.length) {
+    shared.sort(
+      (a, b) =>
+        priorityRank(a.category, priorityCategories) -
+        priorityRank(b.category, priorityCategories),
+    );
+  }
   return shared;
+}
+
+/** Relevance of some profile text/interests to a set of facility categories (0..n). */
+export function relevanceScore(
+  text: string,
+  interests: string[],
+  categories: string[],
+): number {
+  let score = 0;
+  for (const name of categories) {
+    const def = CATEGORIES.find((c) => c.category === name);
+    if (def && matchesCategory(text.toLowerCase(), interests, def)) score += 1;
+  }
+  return score;
+}
+
+/** Does this free text / interest match a single category name? */
+export function textMatchesCategory(
+  text: string,
+  interests: string[],
+  category: string,
+): boolean {
+  const def = CATEGORIES.find((c) => c.category === category);
+  return def ? matchesCategory(text.toLowerCase(), interests, def) : false;
 }
 
 /** The catalyst (open questions) for a given shared-context category. */
@@ -265,6 +304,7 @@ export function approachReasons(
   viewer: Profile | null,
   target: Profile | PublicProfile,
   limit = 5,
+  priorityCategories: string[] = [],
 ): ApproachReason[] {
   const targetText = profileText(target);
   const viewerText = viewer ? profileText(viewer) : "";
@@ -285,7 +325,10 @@ export function approachReasons(
     });
   }
 
-  // shared reasons first
-  out.sort((a, b) => Number(b.shared) - Number(a.shared));
+  // Shared reasons first, then facility-relevant ones.
+  out.sort((a, b) => {
+    if (a.shared !== b.shared) return Number(b.shared) - Number(a.shared);
+    return priorityRank(a.category, priorityCategories) - priorityRank(b.category, priorityCategories);
+  });
   return out.slice(0, limit);
 }

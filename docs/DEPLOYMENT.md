@@ -90,9 +90,35 @@ is live and shared.
 - **Custom domain:** Vercel → Project → **Domains** to add e.g. `around.app`.
 - **Reset between experiments:** the dashboard's "Reset experiment data" button
   clears participant profiles/events/connections but keeps the seed regulars.
-- **Adding more venues:** add another row to `SEED_SPACES` in
-  [`src/lib/seed.ts`](../src/lib/seed.ts) (a new `venueId` slug + name), redeploy,
-  and its QR is `…/join/<new-slug>`.
+- **Adding more venues / facilities:** add a row to `SEED_SPACES` in
+  [`src/lib/seed.ts`](../src/lib/seed.ts) with a new `venueId` slug, a `name`, and a
+  `facilityType` (`cafe` · `library` · `gym` · `run_club` · `bar` · `social` ·
+  `club`), plus a matching seed-people list. Redeploy; its QR is
+  `…/join/<new-slug>` and its dashboard `…/admin/<new-slug>`.
+
+## Multiple facilities (different QR per place)
+
+The app is multi-venue out of the box. Each venue is fully separate — its own QR
+(the `venueId` slug), its own people, its own dashboard — and carries a
+**facility type** that changes only *prioritization*: which of the same constant
+profile signals lead on cards, the screen titles, the onboarding prompts, and
+how conversation catalysts are weighted (a gym leads with training and recent
+PRs; a library with what people are reading; a run club with pace and races).
+
+Seeded venues you can test immediately:
+
+| Facility | Join URL (QR target) | Dashboard |
+|---|---|---|
+| Coffee shop | `/join/blue-tokai-gurgaon` | `/admin/blue-tokai-gurgaon` |
+| Library | `/join/champaca-library` | `/admin/champaca-library` |
+| Gym | `/join/iron-house-gym` | `/admin/iron-house-gym` |
+| Run club | `/join/gurugram-run-club` | `/admin/gurugram-run-club` |
+| Bar | `/join/social-house-bar` | `/admin/social-house-bar` |
+| Social event | `/join/founders-mixer` | `/admin/founders-mixer` |
+
+A founder overview of all venues + links lives at **`/venues`**. This venue →
+facility-config seam is exactly what a future geolocation product would switch on
+automatically instead of via QR.
 
 ## Costs
 

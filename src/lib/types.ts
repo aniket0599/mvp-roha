@@ -73,10 +73,25 @@ export const LOOKING_FOR_OPTIONS: string[] = [
   "Just curious about people",
 ];
 
+// The kind of place a venue is. The *set* of profile signals is identical
+// everywhere; the facility type only changes which signals get prioritized in
+// the UI, the copy, and how conversation catalysts are weighted. This is the
+// seam that a future geolocation-based product would switch on automatically.
+export type FacilityType =
+  | "cafe"
+  | "library"
+  | "gym"
+  | "run_club"
+  | "bar"
+  | "social"
+  | "club";
+
 export interface Space {
   id: string;
   venueId: string; // slug used in the URL / QR code, e.g. "blue-tokai-gurgaon"
   name: string; // e.g. "Blue Tokai"
+  facilityType: FacilityType;
+  tagline?: string; // optional override of the facility's default landing tagline
   imageUrl?: string;
 }
 

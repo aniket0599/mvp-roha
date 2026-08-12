@@ -6,7 +6,7 @@ import type {
   SocialMode,
   Space,
 } from "../types";
-import { SEED_SPACES, seedProfiles } from "../seed";
+import { SEED_SPACES, seedProfilesForSpace } from "../seed";
 import type { DataStore, SpaceMetrics } from "./DataStore";
 
 // ---------------------------------------------------------------------------
@@ -86,6 +86,8 @@ async function ensureSeeded(): Promise<void> {
       id: space.id,
       venue_id: space.venueId,
       name: space.name,
+      facility_type: space.facilityType,
+      tagline: space.tagline ?? null,
       image_url: space.imageUrl ?? null,
     });
     const { count } = await supabase
@@ -93,7 +95,7 @@ async function ensureSeeded(): Promise<void> {
       .select("id", { count: "exact", head: true })
       .eq("space_id", space.id);
     if (!count) {
-      const rows = seedProfiles(space.id).map((p) => ({ ...profileToRow(p), is_seed: true }));
+      const rows = seedProfilesForSpace(space).map((p) => ({ ...profileToRow(p), is_seed: true }));
       await supabase.from("profiles").insert(rows);
     }
   }
@@ -113,6 +115,8 @@ export class SupabaseStore implements DataStore {
       id: data.id,
       venueId: data.venue_id,
       name: data.name,
+      facilityType: data.facility_type ?? "cafe",
+      tagline: data.tagline ?? undefined,
       imageUrl: data.image_url ?? undefined,
     };
   }

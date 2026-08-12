@@ -13,8 +13,14 @@ matching scores, no messaging, no photos-first. The app's job is to reduce socia
 uncertainty and then **get out of the way** so the conversation can happen in
 person.
 
-This repository is the MVP built for the first real-world experiment (one coffee
-shop: **Blue Tokai**).
+This repository is the MVP built for the first real-world experiments across a
+few venue types. It is **multi-facility**: each place has its own QR, its own
+people, and a **facility type** (cafe, library, gym, run club, bar, social event,
+club) that changes which of the same constant profile signals get prioritized in
+the UI — a gym leads with training and recent PRs, a library with what people are
+reading, a run club with pace and races. This is the seam a future
+geolocation-based product would switch on automatically. See `/venues` for the
+founder overview and [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#multiple-facilities-different-qr-per-place).
 
 ---
 

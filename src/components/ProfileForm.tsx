@@ -18,14 +18,31 @@ function toggle(list: string[], value: string, max?: number): string[] {
   return [...list, value];
 }
 
+export interface FormPrompts {
+  interestingPrompt: string;
+  interestingPlaceholder: string;
+  askPrompt: string;
+  askPlaceholder: string;
+}
+
+const DEFAULT_PROMPTS: FormPrompts = {
+  interestingPrompt: "Tell people something interesting",
+  interestingPlaceholder:
+    "Started running 6 months ago and still struggle with long runs. Getting there.",
+  askPrompt: "Ask me about…",
+  askPlaceholder: "Japan travel, HYROX, sociology of technology",
+};
+
 export function ProfileForm({
   venue,
   initial,
   mode,
+  prompts = DEFAULT_PROMPTS,
 }: {
   venue: string;
   initial: ProfileFormInitial;
   mode: "create" | "edit";
+  prompts?: FormPrompts;
 }) {
   const router = useRouter();
   const [f, setF] = useState<ProfileFormInitial>(initial);
@@ -197,23 +214,23 @@ export function ProfileForm({
         </div>
       </Field>
 
-      <Field label="Tell people something interesting">
+      <Field label={prompts.interestingPrompt}>
         <textarea
           className="field-textarea"
           rows={3}
           value={f.interesting}
           onChange={(e) => setF({ ...f, interesting: e.target.value })}
-          placeholder="Started running 6 months ago and still struggle with long runs. Getting there."
+          placeholder={prompts.interestingPlaceholder}
         />
       </Field>
 
-      <Field label="Ask me about…" hint="Separate topics with commas">
+      <Field label={prompts.askPrompt} hint="Separate topics with commas">
         <textarea
           className="field-textarea"
           rows={2}
           value={f.askMeAbout}
           onChange={(e) => setF({ ...f, askMeAbout: e.target.value })}
-          placeholder="Japan travel, HYROX, sociology of technology"
+          placeholder={prompts.askPlaceholder}
         />
       </Field>
 

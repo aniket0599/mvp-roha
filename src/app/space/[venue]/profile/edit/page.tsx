@@ -4,6 +4,7 @@ import { ProfileForm } from "@/components/ProfileForm";
 import { initialFromProfile } from "@/lib/profileFormModel";
 import { getStore } from "@/lib/store";
 import { getUserId } from "@/lib/session";
+import { facilityConfig } from "@/lib/facilities";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +25,12 @@ export default async function EditProfilePage({
     <div className="min-h-dvh flex flex-col">
       <AppBar title="Edit profile" back href={`/space/${params.venue}/profile`} />
       <main className="flex-1 w-full max-w-phone mx-auto px-margin-mobile pt-2">
-        <ProfileForm venue={params.venue} mode="edit" initial={initialFromProfile(me)} />
+        <ProfileForm
+          venue={params.venue}
+          mode="edit"
+          initial={initialFromProfile(me)}
+          prompts={facilityConfig(space.facilityType).onboarding}
+        />
       </main>
     </div>
   );

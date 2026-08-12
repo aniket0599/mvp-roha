@@ -8,6 +8,8 @@ import { TrackOnView } from "@/components/TrackOnView";
 import { getStore } from "@/lib/store";
 import { getUserId } from "@/lib/session";
 import { computeSharedContext, approachReasons, possibleOpenings } from "@/lib/matching";
+import { facilityConfig } from "@/lib/facilities";
+import { orderedNowLines } from "@/lib/prioritize";
 
 export const dynamic = "force-dynamic";
 
@@ -27,9 +29,20 @@ export default async function PersonPage({
 
   const uid = getUserId();
   const viewer = uid ? await store.getProfile(uid) : null;
-  const shared = computeSharedContext(viewer, person);
+  const facility = facilityConfig(space.facilityType);
+  const shared = computeSharedContext(viewer, person, facility.priorityCategories);
   const openings = possibleOpenings(shared);
-  const reasons = approachReasons(viewer, person);
+  const reasons = approachReasons(viewer, person, 5, facility.priorityCategories);
+  const nowLines = orderedNowLines(person, facility);
+
+  // A "Recently" achievement is the headline signal at gyms, run clubs & events.
+  const recentlyBlock = person.recently ? (
+    <Section title="Recently">
+      <blockquote className="border-l-2 border-outline-variant pl-4 text-body-md italic text-on-surface">
+        &ldquo;{person.recently}&rdquo;
+      </blockquote>
+    </Section>
+  ) : null;
 
   return (
     <div className="min-h-dvh flex flex-col pb-28">
@@ -59,10 +72,10 @@ export default async function PersonPage({
         </div>
 
         {/* Right now */}
-        {person.nowLines.length > 0 && (
+        {nowLines.length > 0 && (
           <Section title="Right now">
             <ul className="space-y-3">
-              {person.nowLines.map((line, i) => (
+              {nowLines.map((line, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="text-xl leading-7">{line.emoji}</span>
                   <span className="text-body-md text-on-surface">{line.text}</span>
@@ -71,6 +84,9 @@ export default async function PersonPage({
             </ul>
           </Section>
         )}
+
+        {/* At gyms / run clubs / events, the recent achievement leads. */}
+        {facility.emphasizeRecently && recentlyBlock}
 
         {/* Interested in */}
         {person.interests.length > 0 && (
@@ -133,14 +149,8 @@ export default async function PersonPage({
           </div>
         )}
 
-        {/* Recently */}
-        {person.recently && (
-          <Section title="Recently">
-            <blockquote className="border-l-2 border-outline-variant pl-4 text-body-md italic text-on-surface">
-              &ldquo;{person.recently}&rdquo;
-            </blockquote>
-          </Section>
-        )}
+        {/* Recently (in its usual spot unless the facility already led with it) */}
+        {!facility.emphasizeRecently && recentlyBlock}
 
         {/* Ask me about */}
         {person.askMeAbout.length > 0 && (
